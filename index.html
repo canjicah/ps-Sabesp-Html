@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sabesp</title>
+    <link rel="icon" href="img/imc.png" type="Icons">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+    <header>
+        <nav>
+            <div class="teste">
+                <a class="brand-logo center "></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h3>Relatório de qualidade do tratamento da água</h3>
+            <p>A Sabesp controla a qualidade da água em todo o sistema de abastecimento, desde os mananciais até o cavalete dos imóveis por meio de coletas sistemáticas de amostras e realização de ensaios laboratoriais, em atendimento à portaria do Ministério
+                da Saúde.</p>
+            <p>Abaixo se encontra o relatório de qualidade do tratamento da água no estado de São Paulo.</p>
+
+            <h5>Turbidez</h5>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Período</th>
+                        <th>Sistema de Abastecimento</th>
+                        <th>Municípios</th>
+                        <th>exigido</th>
+                        <th>realizado</th>
+
+                    </tr>
+                </thead>
+                <tbody id="turbidez_table">
+
+                </tbody>
+            </table>
+
+            <h5>Cor Aparente</h5>
+            <table class="table table-bordered table-striped" id="corAparente_table">
+                <tr>
+                    <th>Sistema</th>
+                    <th>Cidade</th>
+                    <th>mes</th>
+                    <th>exigido</th>
+                    <th>realizado</th>
+                </tr>
+            </table>
+            <h5>Cloro Residual Livre</h5>
+            <table class="table table-bordered table-striped" id="cloroResidualLivre_table">
+                <tr>
+                    <th>Sistema</th>
+                    <th>Cidade</th>
+                    <th>mes</th>
+                    <th>exigido</th>
+                    <th>realizado</th>
+                </tr>
+            </table>
+            <h5> Coliforme Total</h5>
+            <table class="table table-bordered table-striped" id="coliformeTotal_table">
+                <tr>
+                    <th>Sistema</th>
+                    <th>Cidade</th>
+                    <th>Mês</th>
+                    <th>Exigido</th>
+                    <th>Realizado</th>
+                </tr>
+            </table>
+            <h5> eColi</h5>
+            <table class="table table-bordered table-striped" id="eColi_table">
+                <tr>
+                    <th>Sistema</th>
+                    <th>Cidade</th>
+                    <th>mes</th>
+                    <th>exigido</th>
+                    <th>realizado</th>
+                </tr>
+            </table>
+            </div>
+            </div>
+</body>
+
+</html>
+<system.webServer>
+    <staticContent>
+        <mimeMap fileExtension=".json" mimeType="application/json" />
+    </staticContent>
+</system.webServer>
+<script>
+    $(document).ready(function() {
+        $.getJSON('http://localhost:3001/posts', function(data) {
+            var turbidez_data = '';
+            $.each(data, function(key, value) {
+                console.log(value)
+                turbidez_data += '<tr>';
+                turbidez_data += '<td class="info-altura">' + value.mes + '</td>';
+                turbidez_data += '<td class="info-nome">' + value.sistema + '</td>';
+                turbidez_data += '<td class="info-peso">' + value.cidade + '</td>';
+                turbidez_data += '<td>' + value.propriedades.turbidez.exigido + '</td>';
+                turbidez_data += '<td>' + value.propriedades.turbidez.realizado + '</td>';
+                turbidez_data += '</tr>';
+            });
+            $('#turbidez_table').append(turbidez_data);
+
+            var corAparente_data = '';
+            $.each(data, function(key, value) {
+                corAparente_data += '<tr>';
+                corAparente_data += '<td class="info-nome" >' + value.sistema + '</td>';
+                corAparente_data += '<td class="info-peso">' + value.cidade + '</td>';
+                corAparente_data += '<td>' + value.mes + '</td>';
+                corAparente_data += '<td>' + value.propriedades.corAparente.exigido + '</td>';
+                corAparente_data += '<td>' + value.propriedades.corAparente.realizado + '</td>';
+                corAparente_data += '</tr>';
+            });
+            $('#corAparente_table').append(corAparente_data);
+
+            var cloroResidualLivre_data = '';
+            $.each(data, function(key, value) {
+                cloroResidualLivre_data += '<tr>';
+                cloroResidualLivre_data += '<td>' + value.sistema + '</td>';
+                cloroResidualLivre_data += '<td>' + value.cidade + '</td>';
+                cloroResidualLivre_data += '<td>' + value.mes + '</td>';
+                cloroResidualLivre_data += '<td>' + value.propriedades.cloroResidualLivre.exigido + '</td>';
+                cloroResidualLivre_data += '<td>' + value.propriedades.cloroResidualLivre.realizado + '</td>';
+                cloroResidualLivre_data += '</tr>';
+            });
+            $('#cloroResidualLivre_table').append(cloroResidualLivre_data);
+
+            var coliformeTotal_data = '';
+            $.each(data, function(key, value) {
+                coliformeTotal_data += '<tr>';
+                coliformeTotal_data += '<td>' + value.sistema + '</td>';
+                coliformeTotal_data += '<td>' + value.cidade + '</td>';
+                coliformeTotal_data += '<td>' + value.mes + '</td>';
+                coliformeTotal_data += '<td>' + value.propriedades.coliformeTotal.exigido + '</td>';
+                coliformeTotal_data += '<td>' + value.propriedades.coliformeTotal.realizado + '</td>';
+                coliformeTotal_data += '</tr>';
+            });
+            $('#coliformeTotal_table').append(coliformeTotal_data);
+
+            var eColi_data = '';
+            $.each(data, function(key, value) {
+                eColi_data += '<tr>';
+                eColi_data += '<td>' + value.sistema + '</td>';
+                eColi_data += '<td>' + value.cidade + '</td>';
+                eColi_data += '<td>' + value.mes + '</td>';
+                eColi_data += '<td>' + value.propriedades.eColi.exigido + '</td>';
+                eColi_data += '<td>' + value.propriedades.eColi.realizado + '</td>';
+                eColi_data += '</tr>';
+            });
+            $('#eColi_table').append(eColi_data);
+
+        });
+    });
+</script>
